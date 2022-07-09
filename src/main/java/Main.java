@@ -12,7 +12,14 @@ public class Main {
         final User user = new User("Peter Griffin","manchkin666", "manchkin666@gmail.com", address, "380991112233", "familyguy.com", company);
 
         Service service = new Service();
-        service.getAllUsersInfo(URI_LINK);
-        service.addUser(URI_LINK, user);
+//        service.getAllUsersInfo(URI_LINK);
+//        service.addUser(URI_LINK, user);
+//        User user1 = service.getUserByID(10);
+//        System.out.println(user1);
+//        User user2 = service.getUserByUsername("Elwyn.Skiles");
+//        System.out.println(user2);
+        service.deleteUser(4);
+        user.setWebsite("fox.com");
+        service.updateUser(user);
     }
 }
