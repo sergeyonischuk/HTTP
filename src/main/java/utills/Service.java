@@ -1,36 +1,40 @@
+package utills;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import entities.Task;
+import entities.User;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class Service {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
     private static final Gson GSON = new Gson();
 
-    public void getAllUsersInfo(URI uri) throws IOException, InterruptedException {
+    public List<User> getAllUsersInfo(URI uri) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
                 .build();
-        final HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        return GSON.fromJson(response.body(), new TypeToken<List<User>>() {
+        }.getType());
     }
 
     public User addUser(URI uri, User user) throws IOException, InterruptedException {
         final String requestBody = GSON.toJson(user);
-        System.out.println(requestBody);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header("Content-type", "application/json")
                 .build();
         final HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        User result = GSON.fromJson(response.body(), User.class);
-        System.out.println(result);
-        return result;
+        return GSON.fromJson(response.body(), User.class);
     }
 
     public User getUserByID(Integer id) throws IOException, InterruptedException {
@@ -39,7 +43,6 @@ public class Service {
                 .GET()
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
         return GSON.fromJson(response.body(), User.class);
     }
 
@@ -49,7 +52,6 @@ public class Service {
                 .GET()
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
         User[] result = GSON.fromJson(response.body(), User[].class);
         return result[0];
     }
@@ -65,16 +67,25 @@ public class Service {
     }
 
     public String updateUser(User user) throws IOException, InterruptedException {
-        final String requestBody = GSON.toJson(user);
+        String requestBody = GSON.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://jsonplaceholder.typicode.com/users"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header("Content-type", "application/json")
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
         return response.body();
 
     }
 
+    public List<Task> getUncompletedUserTasks (int id) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://jsonplaceholder.typicode.com/users/" + id + "/todos"))
+                .GET()
+                .build();
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        List<Task> taskList = GSON.fromJson(response.body(), new TypeToken<List<Task>>(){}.getType());
+        taskList.removeIf(Task::isCompleted);
+        return taskList;
+    }
 }

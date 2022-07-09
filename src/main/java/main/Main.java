@@ -1,3 +1,10 @@
+package main;
+
+import entities.Address;
+import entities.Company;
+import entities.Geo;
+import entities.User;
+import utills.Service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,12 +21,13 @@ public class Main {
         Service service = new Service();
 //        service.getAllUsersInfo(URI_LINK);
 //        service.addUser(URI_LINK, user);
-//        User user1 = service.getUserByID(10);
+//        entities.User user1 = service.getUserByID(10);
 //        System.out.println(user1);
-//        User user2 = service.getUserByUsername("Elwyn.Skiles");
+//        entities.User user2 = service.getUserByUsername("Elwyn.Skiles");
 //        System.out.println(user2);
-        service.deleteUser(4);
-        user.setWebsite("fox.com");
-        service.updateUser(user);
+//        service.deleteUser(4);
+//        user.setWebsite("fox.com");
+//        service.updateUser(user);
+        System.out.println(service.getUncompletedUserTasks(10).size());
     }
 }

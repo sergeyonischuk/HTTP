@@ -1,3 +1,5 @@
+package entities;
+
 public class Geo {
     private double lat;
     private double lng;

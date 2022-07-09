@@ -1,3 +1,5 @@
+package entities;
+
 public class Company {
     private String name;
     private String catchPhrase;
@@ -35,7 +37,7 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{" +
+        return "entities.Company{" +
                 "name='" + name + '\'' +
                 ", catchPhrase='" + catchPhrase + '\'' +
                 ", bs='" + bs + '\'' +

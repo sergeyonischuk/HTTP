@@ -1,3 +1,5 @@
+package entities;
+
 public class Address {
     private String street;
     private String suite;
@@ -56,7 +58,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" +
+        return "entities.Address{" +
                 "street='" + street + '\'' +
                 ", suite='" + suite + '\'' +
                 ", City='" + city + '\'' +
