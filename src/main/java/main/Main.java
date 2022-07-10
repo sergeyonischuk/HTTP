@@ -28,6 +28,7 @@ public class Main {
 //        service.deleteUser(4);
 //        user.setWebsite("fox.com");
 //        service.updateUser(user);
-        System.out.println(service.getUncompletedUserTasks(10).size());
+//        System.out.println(service.getUncompletedUserTasks(10).size());
+        service.writeUserCommentsToFile(5);
     }
 }
