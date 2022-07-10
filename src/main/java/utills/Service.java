@@ -20,9 +20,9 @@ public class Service {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
     private static final Gson GSON = new Gson();
 
-    public List<User> getAllUsersInfo(URI uri) throws IOException, InterruptedException {
+    public List<User> getAllUsersInfo() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(uri)
+                .uri(URI.create("https://jsonplaceholder.typicode.com/users"))
                 .GET()
                 .build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
@@ -30,10 +30,10 @@ public class Service {
         }.getType());
     }
 
-    public User addUser(URI uri, User user) throws IOException, InterruptedException {
+    public User addUser(User user) throws IOException, InterruptedException {
         final String requestBody = GSON.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(uri)
+                .uri(URI.create("https://jsonplaceholder.typicode.com/users"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header("Content-type", "application/json")
                 .build();
@@ -41,6 +41,7 @@ public class Service {
         return GSON.fromJson(response.body(), User.class);
     }
 
+// I will make input parameter == int id, to make tests easier;
     public User getUserByID(Integer id) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://jsonplaceholder.typicode.com/users/" + id))
@@ -82,7 +83,7 @@ public class Service {
 
     }
 
-    public List<Task> getUncompletedUserTasks (int id) throws IOException, InterruptedException {
+    public List<Task> getUncompletedUserTasks (Integer id) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://jsonplaceholder.typicode.com/users/" + id + "/todos"))
                 .GET()
@@ -112,11 +113,5 @@ public class Service {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(filepath), comments);
-
-        System.out.println(filepath);
-    }
-
-    private Post getLastPost(List<Post> posts) {
-        return posts.get(posts.size() - 1);
     }
 }
